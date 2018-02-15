@@ -2,22 +2,39 @@ import React, {Component} from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import chooseServiceAction from '../actions/chooseServiceAction';
+import chooseProviderAction from '../actions/chooseProviderAction';
+import nextStepAction from '../actions/nextStepAction';
 import ProgressSteps from './ProgressSteps';
+import Services from './Services';
+import Providers from './Providers';
 import '../assets/styles/main.css';
 
 class App extends Component {
+	chooseServiceHandler(serviceId) {
+		this.props.chooseService(serviceId);
+		this.props.nextStep();
+	}
+
+	chooseProviderHandler(providerId) {
+		this.props.chooseProvider(providerId);
+		this.props.nextStep();
+	}
+
 	render() {
 		return (
 			<div className="app container">
 				<ProgressSteps />
 
-				{
-					this.props.serviceState.map((service, i) => {
-						return (<a className="item" key={service.id}>
-									<span>{service.name}</span>
-								</a>);
-					})
-				}
+				<Services
+					serviceData={this.props.serviceData}
+					chooseServiceHandler={this.chooseServiceHandler.bind(this)}
+				/>
+
+				<Providers
+					providerData={this.props.providerData}
+					chooseProviderHandler={this.chooseProviderHandler.bind(this)}
+				 />
+
 			</div>
 		);
 	}
@@ -25,13 +42,19 @@ class App extends Component {
 
 function mapStateToProps(state) {
 	return {
-		serviceState: state.serviceReducer
+		serviceData: state.serviceReducer.servicesDataSet,
+		providerData: state.providerReducer.providersDataSet,
+		currentService: state.serviceReducer.currentService,
+		currentProvider: state.serviceReducer.currentProvider,
+		currentStep: state.stepReducer.currentStep
 	}
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		chooseService: bindActionCreators(chooseServiceAction, dispatch)
+		chooseService: bindActionCreators(chooseServiceAction, dispatch),
+		chooseProvider: bindActionCreators(chooseProviderAction, dispatch),
+		nextStep: bindActionCreators(nextStepAction, dispatch)
 	}
 }
 

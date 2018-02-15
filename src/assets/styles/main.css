@@ -35,10 +35,10 @@ body {
 	cursor: pointer;
 	display: table;
 	text-align: center;
+	text-decoration: none !important;
 }
 .item:hover {
 	background-color: #fddc86;
-	text-decoration: none;
 }
 .item > span {
 	display: table-cell;

@@ -1,6 +1,8 @@
-export default function chooseServiceAction(serviceId, providersArray) {
+export default function chooseServiceAction(serviceId) {
 	return {
 		type: 'CHOOSE_SERVICE',
-		payload: ''
+		payload: {
+			currentService: serviceId
+		}
 	}
 }
