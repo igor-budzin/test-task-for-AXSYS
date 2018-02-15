@@ -46,3 +46,18 @@ body {
 	color: #7b7a68;
 	font-size: 20px;
 }
+.event-btn {
+	background-color: #fbe8aa;
+	width: 550px;
+	color: #7b7a68;
+	margin: 20px auto 0 auto;
+	display: block;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+.event-btn:hover {
+	background-color: #fddc86;
+}
+.event-btn:disabled {
+	background-color: #fff;
+}

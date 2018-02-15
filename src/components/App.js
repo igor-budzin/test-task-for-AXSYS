@@ -10,6 +10,14 @@ import Providers from './Providers';
 import '../assets/styles/main.css';
 
 class App extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			activeButton: false
+		};
+	}
+
 	chooseServiceHandler(serviceId) {
 		this.props.chooseService(serviceId);
 		this.props.nextStep();
@@ -17,7 +25,31 @@ class App extends Component {
 
 	chooseProviderHandler(providerId) {
 		this.props.chooseProvider(providerId);
+		this.setState({activeButton: true})
+	}
+
+	onEvent() {
 		this.props.nextStep();
+	}
+
+	showSection() {
+		switch(this.props.currentStep) {
+			case 1:
+				return 	<Services
+							serviceData={this.props.serviceData}
+							chooseServiceHandler={this.chooseServiceHandler.bind(this)}
+						/>
+			case 2:
+				return 	<Providers
+							providerData={this.props.providerData}
+							chooseProviderHandler={this.chooseProviderHandler.bind(this)}
+						/>
+
+			case 3:
+				return <FinalMessage
+							
+				 		/>
+		}
 	}
 
 	render() {
@@ -25,16 +57,16 @@ class App extends Component {
 			<div className="app container">
 				<ProgressSteps />
 
-				<Services
-					serviceData={this.props.serviceData}
-					chooseServiceHandler={this.chooseServiceHandler.bind(this)}
-				/>
+				<div className="clearfix">
+					{this.showSection()}
+				</div>
 
-				<Providers
-					providerData={this.props.providerData}
-					chooseProviderHandler={this.chooseProviderHandler.bind(this)}
-				 />
-
+				<button
+					className="btn btn-default event-btn"
+					disabled={!this.state.activeButton}
+					onClick={this.onEvent}>
+					Create event
+				</button>
 			</div>
 		);
 	}
@@ -45,7 +77,7 @@ function mapStateToProps(state) {
 		serviceData: state.serviceReducer.servicesDataSet,
 		providerData: state.providerReducer.providersDataSet,
 		currentService: state.serviceReducer.currentService,
-		currentProvider: state.serviceReducer.currentProvider,
+		currentProvider: state.providerReducer.currentProvider,
 		currentStep: state.stepReducer.currentStep
 	}
 }
