@@ -11,13 +11,15 @@ export default class Providers extends Component {
 			<div>
 				{
 					this.props.providerData.map((provider) => {
-						return (<a
-									href="#"
-									className="item"
-									key={provider.id}
-									onClick={this.onClick.bind(this, provider.id)}>
-									<span>{provider.name}</span>
-								</a>);
+						if(this.props.currentService.indexOf(provider.id) !== -1) {
+							return (<a
+										href="#"
+										className="item"
+										key={provider.id}
+										onClick={this.onClick.bind(this, provider.id)}>
+										<span>{provider.name}</span>
+									</a>);
+						}
 					})
 				}
 			</div>

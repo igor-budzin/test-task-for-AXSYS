@@ -4,20 +4,14 @@ import { connect } from 'react-redux';
 import chooseServiceAction from '../actions/chooseServiceAction';
 import chooseProviderAction from '../actions/chooseProviderAction';
 import nextStepAction from '../actions/nextStepAction';
+import resetStepAction from '../actions/resetStepAction';
 import ProgressSteps from './ProgressSteps';
 import Services from './Services';
 import Providers from './Providers';
+import FinalMessage from './FinalMessage';
 import '../assets/styles/main.css';
 
 class App extends Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			activeButton: false
-		};
-	}
-
 	chooseServiceHandler(serviceId) {
 		this.props.chooseService(serviceId);
 		this.props.nextStep();
@@ -25,10 +19,6 @@ class App extends Component {
 
 	chooseProviderHandler(providerId) {
 		this.props.chooseProvider(providerId);
-		this.setState({activeButton: true})
-	}
-
-	onEvent() {
 		this.props.nextStep();
 	}
 
@@ -41,13 +31,16 @@ class App extends Component {
 						/>
 			case 2:
 				return 	<Providers
+							currentService={this.props.currentService[0].providers}
 							providerData={this.props.providerData}
 							chooseProviderHandler={this.chooseProviderHandler.bind(this)}
 						/>
 
 			case 3:
 				return <FinalMessage
-							
+							currentProvider={this.props.currentProvider}
+							currentService={this.props.currentService}
+							resetStep={this.props.resetStep}
 				 		/>
 		}
 	}
@@ -55,18 +48,11 @@ class App extends Component {
 	render() {
 		return (
 			<div className="app container">
-				<ProgressSteps />
+				<ProgressSteps currentStep={this.props.currentStep} />
 
 				<div className="clearfix">
 					{this.showSection()}
 				</div>
-
-				<button
-					className="btn btn-default event-btn"
-					disabled={!this.state.activeButton}
-					onClick={this.onEvent}>
-					Create event
-				</button>
 			</div>
 		);
 	}
@@ -86,7 +72,8 @@ function mapDispatchToProps(dispatch) {
 	return {
 		chooseService: bindActionCreators(chooseServiceAction, dispatch),
 		chooseProvider: bindActionCreators(chooseProviderAction, dispatch),
-		nextStep: bindActionCreators(nextStepAction, dispatch)
+		nextStep: bindActionCreators(nextStepAction, dispatch),
+		resetStep: bindActionCreators(resetStepAction, dispatch)
 	}
 }
 

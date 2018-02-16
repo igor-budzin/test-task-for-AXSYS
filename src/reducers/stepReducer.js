@@ -14,7 +14,7 @@ export default function serviceReducer(state = initialState, action) {
 				return Object.assign({}, state)
 			}
 
-		case 'FIRST_STEP':
+		case 'RESET_STEP':
 			const tmpObj = Object.assign({}, state);
 			tmpObj.currentStep = 1;
 			return tmpObj;
